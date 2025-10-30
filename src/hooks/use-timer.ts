@@ -61,13 +61,11 @@ export const useTimer = () => {
     setCurrentDuration(0);
   }, []);
 
-  const stopTimer = useCallback(async () => {
+  const stopTimer = useCallback(() => {
     if (!currentEntry) return;
 
     const endTime = new Date();
     const duration = calculateDuration(currentEntry.startTime, endTime);
-    console.log(duration);
-    
     const completedEntry = { ...currentEntry, endTime, duration };
 
     setEntries((prev) => [completedEntry, ...prev]);
