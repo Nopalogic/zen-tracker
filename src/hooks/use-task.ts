@@ -16,8 +16,6 @@ export const useTasksStore = () => {
     return [];
   });
 
-  console.log(tasks);
-  
   useEffect(() => {
     localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
   }, [tasks]);
