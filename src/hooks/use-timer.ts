@@ -1,6 +1,7 @@
 import { calculateDuration } from "@/lib/format";
 import { Entry } from "@/types";
 import { useCallback, useEffect, useState } from "react";
+import { useTasksStore } from "./use-task";
 
 const TRACKER_STORAGE_KEY = "time_tracker_entries";
 
@@ -30,6 +31,8 @@ export const useTimer = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
+  const { tasks } = useTasksStore();
+
   useEffect(() => {
     localStorage.setItem(TRACKER_STORAGE_KEY, JSON.stringify(entries));
   }, [entries]);
@@ -46,9 +49,10 @@ export const useTimer = () => {
     return () => clearInterval(interval);
   }, [isRunning, isPaused, currentEntry]);
 
-  const startTimer = useCallback(() => {
+  const startTimer = useCallback((taskId: string) => {
     const newEntry: Entry = {
       id: crypto.randomUUID(),
+      task: tasks.find((task) => task.id === taskId)!,
       startTime: new Date(),
       endTime: null,
       duration: 0,
@@ -59,7 +63,7 @@ export const useTimer = () => {
     setIsRunning(true);
     setIsPaused(false);
     setCurrentDuration(0);
-  }, []);
+  }, [tasks]);
 
   const stopTimer = useCallback(() => {
     if (!currentEntry) return;
