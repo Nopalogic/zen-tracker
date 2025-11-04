@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import { useTasks } from "./TaskProvider";
 import { Task } from "@/types";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
-import { useTasksStore } from "@/hooks/use-task";
+import { useAppStore } from "@/stores/app-store";
 
 export function TasksCreateButton() {
   const { setOpen } = useTasks();
@@ -15,7 +15,7 @@ export function TasksCreateButton() {
 }
 
 export function TasksFinishToggleMenuItem(task: Task) {
-  const { editTask } = useTasksStore();
+  const { editTask } = useAppStore();
   return (
     <>
       {!task.isFinish ? (
