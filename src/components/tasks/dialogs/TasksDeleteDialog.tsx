@@ -8,7 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useTasksStore } from "@/hooks/use-task";
+import { useAppStore } from "@/stores/app-store";
 import { Task } from "@/types";
 
 export function TasksDeleteDialog({
@@ -20,7 +20,7 @@ export function TasksDeleteDialog({
   onOpenChange: (open: boolean) => void;
   task: Task;
 }) {
-  const { removeTask } = useTasksStore();
+  const { removeTask } = useAppStore();
 
   const handleDelete = () => {
     removeTask(task.id);
