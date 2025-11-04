@@ -2,11 +2,10 @@ import { TasksProvider } from "@/components/tasks/TaskProvider";
 import { TasksCard } from "@/components/tasks/TasksCard";
 import { TasksCreateButton } from "@/components/tasks/TasksButton";
 import { TasksDialogs } from "@/components/tasks/TasksDialog";
-
-import { useTasksStore } from "@/hooks/use-task";
+import { useAppStore } from "@/stores/app-store";
 
 export default function Tasks() {
-  const { tasks } = useTasksStore();
+  const { tasks } = useAppStore();
   const sortedTasks = [...tasks].sort(
     (a, b) => Number(a.isFinish) - Number(b.isFinish),
   );
@@ -16,7 +15,7 @@ export default function Tasks() {
       <div className="space-y-3 p-4">
         <TasksCreateButton />
         {tasks.length > 0 ? (
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {sortedTasks.map((item) => (
               <TasksCard key={item.id} {...item} />
             ))}

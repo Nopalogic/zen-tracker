@@ -2,32 +2,33 @@ import { TimerControls } from "@/components/timer/TimerControls";
 import { TimerDisplay } from "@/components/timer/TimerDisplay";
 import { TimerEntriesList } from "@/components/timer/TimerEntriesList";
 import { TimerTaskSelector } from "@/components/timer/TimerTaskSelector";
-import { useTasksStore } from "@/hooks/use-task";
-import { useTimer } from "@/hooks/use-timer";
+import { useTimerInterval } from "@/hooks/use-timer";
+import { useAppStore } from "@/stores/app-store";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
 export default function TimeTracker() {
-  const [task, setTask] = useState("");
+  useTimerInterval();
   const {
     entries,
-    currentDuration,
     isRunning,
     isPaused,
+    currentDuration,
     startTimer,
     stopTimer,
     togglePause,
     resetTimer,
-  } = useTimer();
+  } = useAppStore();
 
-  const { tasks } = useTasksStore();
+  const tasks = useAppStore((state) => state.tasks);
+  const [selectedTask, setSelectedTask] = useState<string>("");
 
   const handleStartTimer = () => {
-    if (!task) {
+    if (!selectedTask) {
       toast.error("No task selected", { description: "Please select a task" });
       return;
     }
-    startTimer(task);
+    startTimer(selectedTask);
   };
 
   const totalDurationToday = useMemo(() => {
@@ -42,8 +43,8 @@ export default function TimeTracker() {
       <div className="flex flex-col items-center gap-3">
         <TimerTaskSelector
           data={tasks}
-          task={task}
-          setTask={setTask}
+          task={selectedTask}
+          setTask={setSelectedTask}
           disabled={isRunning || isPaused}
         />
         <TimerDisplay
